@@ -1,0 +1,45 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- development
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: 'MyAgentPool1'
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/DockerFile'
+        tags: |
+          $(tag)
+- stage: Dev
+  displayName: Dev
+  jobs:
+  - job: Dev
+    displayName: Dev
+    pool:
+      name: 'MyAgentPool1'
+    steps:
+    - task: Docker@2
+      displayName: Dev
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/DockerFile'
+        tags: |
+          $(tag)
+

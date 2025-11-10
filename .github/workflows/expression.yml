@@ -1,0 +1,15 @@
+name: Expressions
+
+on:
+ push:
+ workflow_dispatch:
+  inputs: 
+   debug:
+   type: boolean
+   default: false
+jobs:
+ echo-expression:
+  runs-on: ubuntu-latest
+  steps:
+   run: echo "Expression"
+   
